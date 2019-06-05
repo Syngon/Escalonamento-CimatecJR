@@ -2,7 +2,7 @@
 include('connection.php');
 
 session_start();
-   
+
 $email = $_POST['email'];
 $senha = $_POST['senha'];
 
@@ -14,7 +14,10 @@ $result = mysqli_query($con, $query);
 
 if(mysqli_num_rows($result) > 0)
 {
-  header('location:home.html');
+  while($row = mysqli_fetch_assoc($result)){
+    header('location:home.php?id='.$row['id_usuario'].'&nome='.$row['nome']);
+  }
+
 }
 else
 {
