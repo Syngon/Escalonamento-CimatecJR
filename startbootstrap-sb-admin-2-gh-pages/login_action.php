@@ -1,7 +1,6 @@
 <?php
 include('connection.php');
 
-#Inicia sessão 
 session_start();
 
 $email = $_POST['email'];
