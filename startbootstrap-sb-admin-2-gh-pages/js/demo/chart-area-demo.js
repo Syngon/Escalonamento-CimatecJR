@@ -27,6 +27,10 @@ function number_format(number, decimals, dec_point, thousands_sep) {
     return s.join(dec);
 }
 
+var array_bill, string_bill;
+string_bill = "<?php include('graph_functions.php'); $string_bil = billing_by_month(); echo $string_bill; ?>";
+array_bill = string_bill.split("|");
+
 // Area Chart Example
 var ctx = document.getElementById("myAreaChart");
 var myLineChart = new Chart(ctx, {
@@ -46,7 +50,7 @@ var myLineChart = new Chart(ctx, {
             pointHoverBorderColor: "rgba(78, 115, 223, 1)",
             pointHitRadius: 10,
             pointBorderWidth: 2,
-            data: [10000000, 10000000, 10000000, 10000000, 10000000, 10000000, 10000000, 10000000, 10000000, 10000000, 10000000, 10000000],
+            data: array_bill,
     }],
     },
     options: {

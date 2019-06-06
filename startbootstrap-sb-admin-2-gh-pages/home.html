@@ -173,7 +173,7 @@
                       </div>
                       <div class="col">
                         <div class="progress progress-sm mr-2">
-                          <div class="progress-bar bg-info" role="progressbar" style="width: 50%" aria-valuenow="50"
+                          <div class="progress-bar bg-info" role="progressbar" style="width: 50%" aria-valuenow="10"
                             aria-valuemin="0" aria-valuemax="100"></div>
                         </div>
                       </div>
@@ -217,7 +217,7 @@
                       </div>
                       <div class="col">
                         <div class="progress progress-sm mr-2">
-                          <div class="progress-bar bg-info" role="progressbar" style="width: 17%" aria-valuenow="50"
+                          <div class="progress-bar bg-info" role="progressbar" style="width: 60%" aria-valuenow="50"
                             aria-valuemin="0" aria-valuemax="100"></div>
                         </div>
                       </div>
@@ -274,9 +274,20 @@
                 </div>
               </div>
               <!-- Card Body -->
+              <!--Script para teste-->
+              <script>
+                var array_bill, string_bill;
+                s0tring_bill = "<?php include('graph_functions.php'); $string_bil = billing_by_month(); echo $string_bill; ?>";
+                array_bill = string_bill.split("|");
+
+                //var array = [50000, 50000, 50000, 50000, 50000, 50000, 50000, 50000, 50000, 50000, 50000, 50000];
+                function show() {
+                  return array_bill;
+                }
+              </script>
               <div class="card-body">
                 <div class="chart-area">
-                  <canvas id="myAreaChart"></canvas>
+                  <canvas id="myAreaChart" data="show()"></canvas>
                 </div>
               </div>
             </div>

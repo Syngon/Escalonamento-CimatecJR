@@ -179,27 +179,40 @@
                       <div class="col-auto">
                         <div id="QUANTIDADE_FATURAMENTO" class="h5 mb-0 mr-3 font-weight-bold text-gray-800">
                           <?php
-                          include('connection.php');
-                          $faturamento = 0;
-                          $query = "SELECT `valor` FROM `faturamento` WHERE YEAR(data) = 2019";
-                          $result = mysqli_query($con, $query);
-
-                          while($row = mysqli_fetch_assoc($result)){
-                            $faturamento += $row['valor'];
-                          }
-
-                          echo "$faturamento";
-
-                           ?>
+                            include('graph_functions.php');
+                            $amount = billing_amount();
+                            $r =  "$amount" + "K"
+                            echo "$r"
+                          ?>
 
                         </div>
                       </div>
+                      <?php
+                        include('graph_functions.php');
+                        $r = billing_amount();
+                        $percent_qf = ($r*100)/80;
+                        $style_data = "width: " + "$percent_qf" + "%";
+
+                        echo "<div class="col">
+                              <div class="progress progress-sm mr-2"> 
+                                <div id="PROGRESSO_FATURAMENTO" 
+                                class="progress-bar bg-info" 
+                                role="progressbar" 
+                                style='" .htmlspecialchars($style_data). "' 
+                                aria-valuenow="50"
+                                aria-valuemin="0" 
+                                aria-valuemax="100"></div>
+                              </div>
+                            </div>"
+                      ?>
+                      <!--
                       <div class="col">
-                        <div class="progress progress-sm mr-2">
+                        <div class="progress progress-sm mr-2"> 
                           <div id="PROGRESSO_FATURAMENTO" class="progress-bar bg-info" role="progressbar" style="width: 0%" aria-valuenow="50"
                             aria-valuemin="0" aria-valuemax="100"></div>
                         </div>
                       </div>
+                      -->
                     </div>
                   </div>
                   <div class="col-auto">
@@ -217,7 +230,7 @@
                 <div class="row no-gutters align-items-center">
                   <div class="col mr-2">
                     <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">Meta de Faturamento</div>
-                    <div id="TOTAL_FATURAMENTO" class="h5 mb-0 font-weight-bold text-gray-800">80000</div>
+                    <div id="TOTAL_FATURAMENTO" class="h5 mb-0 font-weight-bold text-gray-800">80K</div>
                   </div>
                   <div class="col-auto">
                     <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
@@ -238,25 +251,38 @@
                       <div class="col-auto">
                         <div id="QUANTIDADE_PROJETOS" class="h5 mb-0 mr-3 font-weight-bold text-gray-800">
                           <?php
-                          include('connection.php');
-                          $total = 0;
-                          $query = "SELECT COUNT(*) FROM `faturamento` WHERE YEAR(data) = 2019";
-                          $result = mysqli_query($con, $query);
-
-                          while($row = mysqli_fetch_assoc($result)){
-                            $total++;
-                          }
-                          echo "$total";
-                           ?>
-
+                            include('graph_functions.php');
+                            $amount = actual_projects();
+                            echo "$amount";
+                          ?>
                         </div>
                       </div>
+                      <?php
+                        include('graph_functions.php');
+                        $qt_projects = actual_projects();
+                        $percent_qt = ($qt_projects * 100) / 50;
+                        $style_data = "width: " + "$percent_qt" + "%";
+
+                        echo " <div class="col">
+                                <div class="progress progress-sm mr-2">
+                                  <div id="PROGRESSO_PROJETOS" 
+                                  class="progress-bar bg-info" 
+                                  role="progressbar" 
+                                  style='".htmlspecialchars($style_data)."' 
+                                  aria-valuenow="50"
+                                  aria-valuemin="0" 
+                                  aria-valuemax="100"></div>
+                                </div>
+                              </div>"
+                      ?>
+                      <!--
                       <div class="col">
                         <div class="progress progress-sm mr-2">
                           <div id="PROGRESSO_PROJETOS" class="progress-bar bg-info" role="progressbar" style="width: 0%" aria-valuenow="50"
                             aria-valuemin="0" aria-valuemax="100"></div>
                         </div>
                       </div>
+                      -->
                     </div>
                   </div>
                   <div class="col-auto">
