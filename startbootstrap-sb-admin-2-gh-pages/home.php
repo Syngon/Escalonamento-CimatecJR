@@ -126,6 +126,7 @@
                 aria-haspopup="true" aria-expanded="false">
 
                   <?php
+                  include("connection.php");
 
                   if(isset($_GET['nome'])){
                     $name = $_GET ['nome'];
@@ -141,7 +142,7 @@
                   <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
                   Perfil
                 </a>
-                <a class="dropdown-item" href="RH.html">
+                <a class="dropdown-item" href="RH.php?nome=<?php $name ?>">
                   <i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
                   RH
                 </a>
@@ -181,33 +182,32 @@
                           <?php
                             include('graph_functions.php');
                             $amount = billing_amount();
-                            $r =  "$amount" + "K"
-                            echo "$r"
+                            $r =  "$amount" . "K";
+                            echo "$r";
                           ?>
 
                         </div>
                       </div>
                       <?php
-                        include('graph_functions.php');
+                        //include('graph_functions.php');
                         $r = billing_amount();
                         $percent_qf = ($r*100)/80;
-                        $style_data = "width: " + "$percent_qf" + "%";
-
-                        echo "<div class="col">
-                              <div class="progress progress-sm mr-2"> 
-                                <div id="PROGRESSO_FATURAMENTO" 
-                                class="progress-bar bg-info" 
-                                role="progressbar" 
-                                style='" .htmlspecialchars($style_data). "' 
-                                aria-valuenow="50"
-                                aria-valuemin="0" 
-                                aria-valuemax="100"></div>
-                              </div>
-                            </div>"
+                        $style_data = "width:" . $percent_qf . "%;";
+                        echo ' <div class="col">';
+                        echo      '<div class="progress progress-sm mr-2">';
+                        echo        '<div id="PROGRESSO_FATURAMENTO"';
+                        echo          'class="progress-bar bg-info"';
+                        echo          'role="progressbar"';
+                        echo          'style='.$style_data;
+                        echo          'aria-valuenow="50"';
+                        echo          'aria-valuemin="0"';
+                        echo          'aria-valuemax="100"></div>';
+                        echo        "</div>";
+                        echo      "</div>";
                       ?>
                       <!--
                       <div class="col">
-                        <div class="progress progress-sm mr-2"> 
+                        <div class="progress progress-sm mr-2">
                           <div id="PROGRESSO_FATURAMENTO" class="progress-bar bg-info" role="progressbar" style="width: 0%" aria-valuenow="50"
                             aria-valuemin="0" aria-valuemax="100"></div>
                         </div>
@@ -251,29 +251,29 @@
                       <div class="col-auto">
                         <div id="QUANTIDADE_PROJETOS" class="h5 mb-0 mr-3 font-weight-bold text-gray-800">
                           <?php
-                            include('graph_functions.php');
+                            //include('graph_functions.php');
                             $amount = actual_projects();
                             echo "$amount";
                           ?>
                         </div>
                       </div>
                       <?php
-                        include('graph_functions.php');
+                        //include('graph_functions.php');
                         $qt_projects = actual_projects();
                         $percent_qt = ($qt_projects * 100) / 50;
-                        $style_data = "width: " + "$percent_qt" + "%";
+                        $style_data = "width: " . $percent_qt . "%;";
 
-                        echo " <div class="col">
-                                <div class="progress progress-sm mr-2">
-                                  <div id="PROGRESSO_PROJETOS" 
-                                  class="progress-bar bg-info" 
-                                  role="progressbar" 
-                                  style='".htmlspecialchars($style_data)."' 
-                                  aria-valuenow="50"
-                                  aria-valuemin="0" 
-                                  aria-valuemax="100"></div>
-                                </div>
-                              </div>"
+                        echo ' <div class="col">';
+                        echo      '<div class="progress progress-sm mr-2">';
+                        echo     '<div id="PROGRESSO_PROJETOS"';
+                        echo          'class="progress-bar bg-info"';
+                        echo          'role="progressbar"';
+                        echo          'style='.$style_data;
+                        echo          'aria-valuenow="50"';
+                        echo          'aria-valuemin="0"';
+                        echo          'aria-valuemax="100"></div>';
+                        echo        "</div>";
+                        echo      "</div>";
                       ?>
                       <!--
                       <div class="col">

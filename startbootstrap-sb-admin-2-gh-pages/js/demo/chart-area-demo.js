@@ -30,6 +30,7 @@ function number_format(number, decimals, dec_point, thousands_sep) {
 var array_bill, string_bill;
 string_bill = "<?php include('graph_functions.php'); $string_bil = billing_by_month(); echo $string_bill; ?>";
 array_bill = string_bill.split("|");
+//console.log(string_bill);
 
 // Area Chart Example
 var ctx = document.getElementById("myAreaChart");
