@@ -25,6 +25,11 @@
 <body class="bg-gradient-primary">
 
   <style>
+    .erromudar {
+      color: red;
+      font-weight: bold;
+    }
+
     .img-fluid {
       position: relative;
       left: 60px;
@@ -53,9 +58,6 @@
     }
     .col-last{
       margin-bottom: 0rem!important;
-    }
-    .cargo{
-      border-radius: 10rem!important;
     }
   </style>
 
@@ -127,36 +129,6 @@
                       placeholder="Confirmar senha" name="senha2">
                   </div>
                 </div>
-                <div class="form-group row">
-                  <div class="col-sm-6 mb-sm-0">
-                    <select class="custom-select mr-sm-2" id="inlineFormCustomSelect">
-                      <option selected>Núcleo</option>
-                      <option value="1">NPCP</option>
-                      <option value="2">NPM</option>
-                      <option value="3">NPCA</option>
-                      <option value="4">NPE</option>
-                      <option value="5">NPC</option>
-                      <option value="6">NPQ</option>
-                      <option value="7">NPP</option>
-                      <option value="8">DPJ</option>
-                      <option value="9">DMKT</option>
-                      <option value="10">DRH</option>
-                      <option value="11">DAF</option>
-                      <option value="12">DPRES</option>
-                      <option value="13">DVP</option>
-                    </select>
-                  </div>
-                  <div class="col-sm-6 mb-sm-0">
-                    <select class="custom-select mr-sm-2" id="inlineFormCustomSelect">
-                      <option selected>Cargo</option>
-                      <option value="1">Membro</option>
-                      <option value="2">Trainee</option>
-                      <option value="3">Gerente</option>
-                      <option value="4">Diretor</option>
-                      <option value="5">Presidente</option>
-                    </select>
-                  </div>
-                </div>
                 <div class="form-last form-group row">
                   <div class="col-sm-6 mb-3 mb-sm-0">
                     <input type="text" class="form-control form-control-user" id="exampleFirstName" placeholder="PIN" name="pin">
@@ -167,6 +139,25 @@
                 </div>
                   <nav class="navbar navbar-expand navbar-light bg-light mb-4"></nav>
                 <input type="submit" class="btn btn-primary btn-user btn-block" value="Cadastrar-se"/>
+
+                <?php
+                    $fullUrl = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
+
+                    if(strpos($fullUrl, "error=pin") == true){
+                      echo "<p class='erromudar' >PIN ERRADO COMPANHEIRO</p>";
+                    }
+                    else if(strpos($fullUrl, "error=empty") == true){
+                      echo "<p class='erromudar' >Algum campo de senha estava vazio</p>";
+                    }
+                    else if(strpos($fullUrl, "error=wrongpass") == true){
+                      echo "<p class='erromudar' >Senhas diferentes!</p>";
+                    }
+                    else if(strpos($fullUrl, "error=user") == true){
+                      echo "<p class='erromudar' >Usuario ja cadastrado</p>";
+                    }
+
+                ?>
+
               </form>
               <hr>
 

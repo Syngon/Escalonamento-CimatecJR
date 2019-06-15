@@ -65,7 +65,16 @@
 
       <!-- Topbar -->
       <nav class="navbar navbar-expand navbar-light bg-gradient-primary topbar mb-4 static-top shadow navbar-inverse">
-        <a class="container-logo container-fluid" href="index.php"><img src="img/engbranco.png" class="logomarca"></a>
+        <a class="container-logo container-fluid" href=
+        <?php
+        include("connection.php");
+
+        if(isset($_GET['id'])){
+          $id = $_GET ['id'];
+          echo "home.php?id=".$id;
+        }
+        ?>
+        ><img src="img/engbranco.png" class="logomarca"></a>
         <!-- Topbar Navbar -->
         <div class="container-fluid">
           <ul class="navbar-nav ml-auto">
@@ -76,7 +85,15 @@
                 aria-haspopup="true" aria-expanded="false">
                 <i class="fas fa-bell fa-fw"></i>
                 <!-- Counter - Alerts -->
-                <span class="badge badge-danger badge-counter">3+</span>
+                <span class="badge badge-danger badge-counter">
+                  <?php
+                  $query = 'select count(*) as cont from reclamacao where id_reclamado ='.$id;
+                  $result = mysqli_query($con, $query);
+                  while ($row = mysqli_fetch_array($result)) {
+                    echo $row['cont'];
+                  }
+                   ?>
+                   +</span>
               </a>
               <!-- Dropdown - Alerts -->
               <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in"
@@ -84,39 +101,46 @@
                 <h6 class="dropdown-header">
                   Notificação
                 </h6>
-                <a class="dropdown-item d-flex align-items-center" href="#">
-                  <div class="mr-3">
-                    <div class="icon-circle bg-primary">
-                      <i class="fas fa-file-alt text-white"></i>
-                    </div>
-                  </div>
-                  <div>
-                    <div class="small text-gray-500">12 de Dezembro, 2019</div>
-                    <span class="font-weight-bold">Atingimos 104% da nossa meta de projetos</span>
-                  </div>
-                </a>
-                <a class="dropdown-item d-flex align-items-center" href="#">
-                  <div class="mr-3">
-                    <div class="icon-circle bg-success">
-                      <i class="fas fa-donate text-white"></i>
-                    </div>
-                  </div>
-                  <div>
-                    <div class="small text-gray-500">7 de Dezenbro, 2019</div>
-                    90% da meta de faturamento foi batida
-                  </div>
-                </a>
-                <a class="dropdown-item d-flex align-items-center" href="#">
-                  <div class="mr-3">
-                    <div class="icon-circle bg-warning">
-                      <i class="fas fa-exclamation-triangle text-white"></i>
-                    </div>
-                  </div>
-                  <div>
-                    <div class="small text-gray-500">2 de Dezembro, 2019</div>
-                    Você possui 2 ardiventencias ;-;
-                  </div>
-                </a>
+                <?php
+                include("connection.php");
+                if(isset($_GET['id'])){
+                  $id = $_GET ['id'];
+                }
+                $query = 'select id_reclamado, tipo, DAY(dia) as dia, MONTH(dia) as mes, YEAR(dia) as ano from reclamacao where id_reclamado ='.$id;
+                $result = mysqli_query($con, $query);
+
+                while ($row = mysqli_fetch_array($result)) {
+                  $mes = "";
+              		switch($row['mes']){
+              			case"1":  $mes = "Janeiro";     break;
+              			case"2":  $mes = "Fevereiro"; 	break;
+              			case"3":  $mes = "Março";   	break;
+              			case"4":  $mes = "Abril"; 	 	break;
+              			case"5":  $mes = "Maio";  		break;
+              			case"6":  $mes = "Junho";   	break;
+              			case"7":  $mes = "Julho";       break;
+              			case"8":  $mes = "Agosto";      break;
+              			case"9":  $mes = "Setembro"; 	break;
+              			case"10": $mes = "Outubro"; 	break;
+              			case"11": $mes = "Novembro";   	break;
+              			case"12": $mes = "Dezembro";  	break;
+                  }
+
+
+                  echo '<a class="dropdown-item d-flex align-items-center" href="#">';
+                    echo '<div class="mr-3">';
+                      echo '<div class="icon-circle bg-primary">';
+                        echo '<i class="fas fa-file-alt text-white"></i>';
+                      echo '</div>';
+                    echo '</div>';
+                    echo '<div>';
+                      echo '<div class="small text-gray-500">'.$row['dia'].' de '.$mes.', '.$row['ano'].'   </div>';
+                      echo '<span class="font-weight-bold">'.$row['tipo'].'</span>';
+                    echo '</div>';
+                  echo '</a>';
+                }
+                 ?>
+
               </div>
             </li>
 
@@ -128,9 +152,14 @@
                   <?php
                   include("connection.php");
 
-                  if(isset($_GET['nome'])){
-                    $name = $_GET ['nome'];
-                    echo "<span class="."mr-2 d-none d-lg-inline text-white small>$name</span>";
+                  if(isset($_GET['id'])){
+                    $id = $_GET ['id'];
+                    $query = "select * from usuario where id_usuario = ".$id;
+                    $result = mysqli_query($con, $query);
+                    while($row = mysqli_fetch_array($result)){
+                      echo '<span class="."mr-2 d-none d-lg-inline text-white small>'.$row['nome'].'&nbsp&nbsp&nbsp</span>';
+                    }
+
                   }
                   ?>
 
@@ -138,14 +167,22 @@
               </a>
               <!-- Dropdown - User Information -->
               <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
-                <a class="dropdown-item" href="perfil.html">
-                  <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
-                  Perfil
-                </a>
-                <a class="dropdown-item" href="RH.php?nome=<?php $name ?>">
-                  <i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
-                  RH
-                </a>
+                <?php
+                if(isset($_GET['id'])){
+                  $id = $_GET ['id'];
+                  $query = "select id_usuario, UPPER(nucleo) as nucleo from usuario where id_usuario = ".$id;
+                  $result = mysqli_query($con, $query);
+                  while($row = mysqli_fetch_array($result)){
+                    if($row['nucleo'] == 'DRH'){
+                      echo '<a class="dropdown-item" href="RH.php?id='.$row['id_usuario'].'">';
+                      echo '<i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>';
+                      echo 'RH';
+                      echo '</a>';
+                    }
+                  }
+                  }
+                 ?>
+
                 <a class="dropdown-item" href="mudar.php">
                   <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
                   Mudar senha
@@ -375,51 +412,26 @@
               <div class="card-header py-3">
                 <h6 class="m-0 font-weight-bold text-primary">Quem esta na sede:</h6>
               </div>
-              <div class="card-body">
-                <img src="img/Avatar1.png" width="45px">
-                <span class="nome">Fulano</span>
-                <a data-toggle="modal" data-target="#Denuncia" href="#"
-                  class="d-none d-sm-inline-block btn btn-danger ">
-                  <span class="icon text-white">
-                    <i class="fas fa-exclamation-triangle"></i>
-                    Não está na sede!
-                  </span>
-                </a>
-                <a href="#" data-toggle="modal" data-target="#Denuncia"
-                  class="btn-mobile d-sm-none d-inline-block btn btn-danger btn-circle">
-                  <i class="fas fa-exclamation-triangle"></i>
-                </a>
-              </div>
-              <div class="card-body">
-                <img src="img/Avatar2.png" width="45px">
-                <span class="nome">Ciclano</span>
-                <a data-toggle="modal" data-target="#Denuncia" href="#"
-                  class="d-none d-sm-inline-block btn btn-danger ">
-                  <span class="icon text-white">
-                    <i class="fas fa-exclamation-triangle"></i>
-                    Não está na sede!
-                  </span>
-                </a>
-                <a href="#" data-toggle="modal" data-target="#Denuncia"
-                  class="btn-mobile d-sm-none d-inline-block btn btn-danger btn-circle">
-                  <i class="fas fa-exclamation-triangle"></i>
-                </a>
-              </div>
-              <div class="card-body">
-                <img src="img/Avatar3.png" width="45px">
-                <span class="nome">Mariazinha</span>
-                <a data-toggle="modal" data-target="#Denuncia" href="#"
-                  class="d-none d-sm-inline-block btn btn-danger ">
-                  <span class="icon text-white">
-                    <i class="fas fa-exclamation-triangle"></i>
-                    Não está na sede!
-                  </span>
-                </a>
-                <a href="#" data-toggle="modal" data-target="#Denuncia"
-                  class="btn-mobile d-sm-none d-inline-block btn btn-danger btn-circle">
-                  <i class="fas fa-exclamation-triangle"></i>
-                </a>
-              </div>
+              <?php
+              include("connection.php");
+              if(isset($_GET['id'])){
+                $id = $_GET ['id'];
+              }
+              $result = mysqli_query($con, 'select id_usuario from usuario  where id_usuario = '.$id);
+              $query1 = 'select nome, id_usuario, count(*) as quantidade from escalonamento join usuario using(id_usuario) group by id_usuario having count(*) % 2 = 1';
+              $result1 = mysqli_query($con, $query1);
+
+              while ($row = mysqli_fetch_array($result1)) {
+                echo '<div class="card-body">';
+                  echo '<img src="img/Avatar1.png" width="45px">';
+                  echo '<span class="nome">'.$row['nome'].'</span>';
+                  echo '<a href="denuncia.php?id_denunciador='.$id.'&id_denunciado='.$row['id_usuario'].'" class="d-none d-sm-inline-block btn btn-danger ">';
+                  echo '<span class="icon text-white"> <i class="fas fa-exclamation-triangle"></i> Não está na sede! </span>';
+                  echo '</a>';
+                echo '</div>';
+              }
+
+               ?>
             </div>
           </div>
 
@@ -521,24 +533,6 @@
   </div>
 
   <!--CONFIRMAÇAO DE DENUNCIA-->
-  <div class="modal fade" id="Denuncia" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-    aria-hidden="true">
-    <div class="modal-dialog" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">Você está prestes a denunciar alguém...</h5>
-          <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">×</span>
-          </button>
-        </div>
-        <div class="modal-body">Você tem certeza que esta pessoa não está na sede?</div>
-        <div class="modal-footer">
-          <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancelar</button>
-          <a class="btn btn-primary" href="#">Sim</a>
-        </div>
-      </div>
-    </div>
-  </div>
 
   <!-- Bootstrap core JavaScript-->
   <script src="vendor/jquery/jquery.min.js"></script>

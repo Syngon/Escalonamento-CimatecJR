@@ -20,17 +20,17 @@ $bairro = $_POST['bairro'];
 
 if($pin != 123)
 {
-    echo "PIN ERRADO COMPANHEIRO";
+  header('location:register.php?error=pin');
 }
 
 else if(empty($senha) || empty($senha2))
 {
-  echo "Algum campo de senha esta vazio";
+  header('location:register.php?error=empty');
 }
 
 else if($senha != $senha2)
 {
-  echo 'Senhas diferentes!';
+  header('location:register.php?error=wrongpass');
 }
 
 else
@@ -39,20 +39,20 @@ else
 
     if(mysqli_num_rows(mysqli_query($con, "SELECT * FROM `usuario` WHERE `cpf` = '$cpf'")) > 0)
     {
-        echo "Usuario ja cadastrado";
+      header('location:register.php?error=user');
     }
 
     //Query para inserir o endereco
     mysqli_query($con, "INSERT INTO endereco(rua, cep, numero, complemento, bairro, cidade) VALUES('$rua', '$cep', '$numero', '$complemento', '$bairro', '$cidade') ");
     //Pegar id_endereco para colocar no Usuario
-    $endereco =mysqli_insert_id($con);
+    $endereco = mysqli_insert_id($con);
 
     $query = "INSERT INTO usuario(nome, sobrenome, email, senha, telefone, cpf, endereco) VALUES('$nome', '$sobrenome', '$email', '$senha', '$telefone', '$cpf', '$endereco')";
     $result = mysqli_query($con, $query);
 
     if($result)
     {
-      header('location:login.html');
+      header('location:login.php');
     }
 
 }

@@ -48,7 +48,16 @@
 
         <!-- Topbar -->
         <nav class="navbar navbar-expand navbar-light bg-gradient-primary topbar mb-4 static-top shadow navbar-inverse">
-          <a class="container-logo container-fluid" href="home.php"><img src="img/engbranco.png"
+          <a class="container-logo container-fluid" href=
+          <?php
+          include("connection.php");
+
+          if(isset($_GET['id'])){
+            $id = $_GET ['id'];
+            echo "home.php?id=".$id;
+          }
+          ?>
+          ><img src="img/engbranco.png"
               class="logomarca"></a>
           <!-- Topbar Navbar -->
           <div class="container-fluid">
@@ -112,9 +121,13 @@
                     <?php
                     include("connection.php");
 
-                    if(isset($_GET['nome'])){
-                      $name = $_GET ['nome'];
-                      echo "<span class="."mr-2 d-none d-lg-inline text-white small>$name</span>";
+                    if(isset($_GET['id'])){
+                      $id = $_GET ['id'];
+                      $query = "select * from usuario where id_usuario = ".$id;
+                      $result = mysqli_query($con, $query);
+                      while($row = mysqli_fetch_array($result)){
+                        echo "<span class="."mr-2 d-none d-lg-inline text-white small>".$row['nome']."</span>";
+                      }
                     }
                     ?>
                   </span>
@@ -122,15 +135,7 @@
                 </a>
                 <!-- Dropdown - User Information -->
                 <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
-                  <a class="dropdown-item" href="perfil.html">
-                    <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
-                    Perfil
-                  </a>
-                  <a class="dropdown-item" href="tables.html">
-                    <i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
-                    RH
-                  </a>
-                  <a class="dropdown-item" href="mudar.html">
+                  <a class="dropdown-item" href="mudar.php">
                     <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
                     Mudar senha
                   </a>
@@ -165,35 +170,36 @@
                       <th>Cargo</th>
                       <th>Núcleo</th>
                       <th>Horas Semanais</th>
-                      <th>Advertências</th>
                       <th>Denúncias</th>
+                      <th>Advertências</th>
                     </tr>
                   </thead>
-                  <tfoot>
-                    <tr>
-                      <th>Nome</th>
-                      <th>Cargo</th>
-                      <th>Núcleo</th>
-                      <th>Horas Semanais</th>
-                      <th>Advertências</th>
-                      <th>Denúncias</th>
-                    </tr>
-                  </tfoot>
                   <tbody>
                     <tr>
                       <?php
                       include("connection.php");
-                      $query = "SELECT nome, sobrenome, email, telefone, cpf, endereco FROM usuario";
+                      $query = "SELECT u.id_usuario, u.nome, u.cargo, u.nucleo, u.cpf, COUNT(d.denunciado) AS denuncias FROM usuario u JOIN denuncia d ON(u.id_usuario = d.denunciado) GROUP BY u.id_usuario union all SELECT u.id_usuario, u.nome, u.cargo, u.nucleo, u.cpf, 0 AS denuncias FROM usuario u JOIN denuncia d WHERE u.id_usuario NOT IN (SELECT denunciado FROM denuncia) GROUP BY u.id_usuario";
                       $result = mysqli_query($con, $query);
+                      if(isset($_GET['id'])) $id = $_GET ['id'];
 
                       while($row = mysqli_fetch_assoc($result)){
                         echo "<tr>";
-                          echo "<td>".$row['nome']."</td>";
-                          echo "<td>".$row['sobrenome']."</td>";
-                          echo "<td>".$row['email']."</td>";
-                          echo "<td>".$row['telefone']."</td>";
-                          echo "<td>".$row['cpf']."</td>";
-                          echo "<td>".$row['endereco']."</td>";
+                          echo '<form method="post" action="reclamacao.php?idrh='.$id.'&sofreu='.$row['id_usuario'].'">';
+                            echo "<td>".$row['nome']."</td>";
+                            echo "<td>".$row['cargo']."</td>";
+                            echo "<td>".$row['nucleo']."</td>";
+                            echo "<td>".$row['cpf']."</td>";
+                            echo "<td>".$row['denuncias']."</td>";
+                            echo "<td>";
+                              echo '<select name="opcao">';
+                                echo '<option value=""></option>';
+                                echo '<option value="falta">Falta</option>';
+                                echo '<option value="hora">Poucas horas</option>';
+                                echo '';
+                              echo '</select>';
+                              echo '&nbsp&nbsp&nbsp<input type="submit" value="Enviar"/>';
+                            echo "</form>";
+                          echo "</td>";
                         echo "</tr>";
                       }
                        ?>

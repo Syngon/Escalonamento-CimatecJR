@@ -15,12 +15,12 @@ $result = mysqli_query($con, $query);
 if(mysqli_num_rows($result) > 0)
 {
   while($row = mysqli_fetch_assoc($result)){
-    header('location:home.php?id='.$row['id_usuario'].'&nome='.$row['nome']);
+    header('location:home.php?id='.$row['id_usuario']);
   }
 
 }
 else
 {
-  echo 'Login ou senha errado!';
+  header('location:login.php?error=error');
 }
  ?>

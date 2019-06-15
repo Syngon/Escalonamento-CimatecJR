@@ -22,6 +22,10 @@
 <body class="bg-gradient-primary">
 
     <style>
+        .erromudar {
+          color: red;
+          font-weight: bold;
+        }
         .img-fluid {
             position: relative;
             left: 100px;
@@ -67,7 +71,15 @@
                                         <div class="form-group">
 
                                         </div>
-                                        <input type="submit" form="user" class="btn btn-primary btn-user btn-block" name="submit" value="Entrar"/> 
+                                        <input type="submit" form="user" class="btn btn-primary btn-user btn-block" name="submit" value="Entrar"/>
+                                        <?php
+                                            $fullUrl = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
+
+                                            if(strpos($fullUrl, "error=error") == true){
+                                              echo "<p class='erromudar'>LOGIN OU SENHA ERRADOS</p>";
+                                            }
+
+                                        ?>
                                     </form>
                                     <hr>
                                     <div class="text-center">

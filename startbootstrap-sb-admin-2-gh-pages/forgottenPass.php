@@ -2,7 +2,7 @@
 include('connection.php');
 
 session_start();
-  
+
 $email = $_POST['email'];
 
 $query = "SELECT id_usuario FROM `usuario` WHERE `email` = '$email'";
@@ -16,13 +16,13 @@ if(!$id){
     echo "FUDEU BAHIA";
 }
 else{
-    if(mail("naotivecriatividadepraisso@gmail.com", "teste", "teste" )){
-         header('location:login.html');
+    if(mail($email, "Esqueci minha senha", "" )){
+         header('location:login.php');
     }
     else{
         echo "Erro";
     }
-   
+
 }
 
  ?>
