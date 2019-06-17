@@ -75,8 +75,10 @@
         }
         ?>
         ><img src="img/engbranco.png" class="logomarca"></a>
+        
         <!-- Topbar Navbar -->
         <div class="container-fluid">
+        
           <ul class="navbar-nav ml-auto">
 
             <!-- Nav Item - Alerts -->
@@ -357,7 +359,7 @@
             <div class="card shadow mb-4">
               <!-- Card Header - Dropdown -->
               <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                <h6 class="m-0 font-weight-bold text-primary">Grafico de Faturamento</h6>
+                <h6 class="m-0 font-weight-bold text-primary">Grafico de Faturamento</h6>-
                 <div class="dropdown no-arrow">
                   <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown"
                     aria-haspopup="true" aria-expanded="false">
@@ -417,21 +419,22 @@
               if(isset($_GET['id'])){
                 $id = $_GET ['id'];
               }
-              $result = mysqli_query($con, 'select id_usuario from usuario  where id_usuario = '.$id);
-              $query1 = 'select nome, id_usuario, count(*) as quantidade from escalonamento join usuario using(id_usuario) group by id_usuario having count(*) % 2 = 1';
-              $result1 = mysqli_query($con, $query1);
-
-              while ($row = mysqli_fetch_array($result1)) {
-                echo '<div class="card-body">';
-                  echo '<img src="img/Avatar1.png" width="45px">';
-                  echo '<span class="nome">'.$row['nome'].'</span>';
-                  echo '<a href="denuncia.php?id_denunciador='.$id.'&id_denunciado='.$row['id_usuario'].'" class="d-none d-sm-inline-block btn btn-danger ">';
-                  echo '<span class="icon text-white"> <i class="fas fa-exclamation-triangle"></i> Não está na sede! </span>';
-                  echo '</a>';
-                echo '</div>';
-              }
-
-               ?>
+                if ($id != null){
+                  $result = mysqli_query($con, 'select id_usuario from usuario  where id_usuario = '.$id);
+                  $query1 = 'select nome, id_usuario, count(*) as quantidade from escalonamento join usuario using(id_usuario) group by id_usuario having count(*) % 2 = 1';
+                  $result1 = mysqli_query($con, $query1);
+    
+                  while ($row = mysqli_fetch_array($result1)) {
+                    echo '<div class="card-body">';
+                      echo '<img src="img/Avatar1.png" width="45px">';
+                      echo '<span class="nome">'.$row['nome'].'</span>';
+                      echo '<a href="denuncia.php?id_denunciador='.$id.'&id_denunciado='.$row['id_usuario'].'" class="d-none d-sm-inline-block btn btn-danger ">';
+                      echo '<span class="icon text-white"> <i class="fas fa-exclamation-triangle"></i> Não está na sede! </span>';
+                      echo '</a>';
+                    echo '</div>';
+                  }
+                }
+              ?>
             </div>
           </div>
 
@@ -491,14 +494,21 @@
     </div>
     <!-- End of Main Content -->
 
+    
     <!-- Footer -->
     <footer class="sticky-footer bg-white">
       <div class="container my-auto">
         <div class="copyright text-center my-auto">
+        <form action="iamhere.php" type="POST" enctype="multipart/form-data">
           <span>Desafio Trainee NPCP 2019</span>
+            <input type="hidden" value="<?php  if(isset($_GET['id'])){$id = $_GET ['id']; echo $id;} ?>" name="id">
+            <input id="bt_iamhere" type="submit" style="margin-left: 30px" class="btn btn-primary" data-dismiss="modal" value="Estou aqui  / Sair da Sede"/>
+          </form>
         </div>
       </div>
+      
     </footer>
+
     <!-- End of Footer -->
 
   </div>

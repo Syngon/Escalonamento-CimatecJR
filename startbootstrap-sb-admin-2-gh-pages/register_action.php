@@ -47,7 +47,7 @@ else
     //Pegar id_endereco para colocar no Usuario
     $endereco = mysqli_insert_id($con);
 
-    $query = "INSERT INTO usuario(nome, sobrenome, email, senha, telefone, cpf, endereco) VALUES('$nome', '$sobrenome', '$email', '$senha', '$telefone', '$cpf', '$endereco')";
+    $query = "INSERT INTO usuario(nome, sobrenome, email, senha, telefone, cpf, endereco, cargo, nucleo) VALUES('$nome', '$sobrenome', '$email', '$senha', '$telefone', '$cpf', '$endereco', '.', '.')";
     $result = mysqli_query($con, $query);
 
     if($result)
