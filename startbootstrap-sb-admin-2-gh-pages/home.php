@@ -2,7 +2,15 @@
 <html lang="pt-br">
 
 <head>
-
+<?php
+include('connection.php');
+session_start();
+if(!isset($_SESSION['user'])){
+  var_dump($_SESSION);
+  header('location:login.php');
+}
+$user = $_SESSION['user'];
+ ?>
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <meta name="description" content="">
@@ -65,20 +73,11 @@
 
       <!-- Topbar -->
       <nav class="navbar navbar-expand navbar-light bg-gradient-primary topbar mb-4 static-top shadow navbar-inverse">
-        <a class="container-logo container-fluid" href=
-        <?php
-        include("connection.php");
+        <a class="container-logo container-fluid" href="home.php"><img src="img/engbranco.png" class="logomarca"></a>
 
-        if(isset($_GET['id'])){
-          $id = $_GET ['id'];
-          echo "home.php?id=".$id;
-        }
-        ?>
-        ><img src="img/engbranco.png" class="logomarca"></a>
-        
         <!-- Topbar Navbar -->
         <div class="container-fluid">
-        
+
           <ul class="navbar-nav ml-auto">
 
             <!-- Nav Item - Alerts -->
@@ -89,10 +88,12 @@
                 <!-- Counter - Alerts -->
                 <span class="badge badge-danger badge-counter">
                   <?php
-                  $query = 'select count(*) as cont from reclamacao where id_reclamado ='.$id;
+                  $query = 'select count(*) as cont from reclamacao where id_reclamado ='.$user['id_usuario']." AND YEAR(dia_ocorrido) >= ".date('Y');
                   $result = mysqli_query($con, $query);
-                  while ($row = mysqli_fetch_array($result)) {
-                    echo $row['cont'];
+                  if($result != null){
+                    while ($row = mysqli_fetch_array($result)) {
+                      echo $row['cont'];
+                    }
                   }
                    ?>
                    +</span>
@@ -104,13 +105,9 @@
                   Notificação
                 </h6>
                 <?php
-                include("connection.php");
-                if(isset($_GET['id'])){
-                  $id = $_GET ['id'];
-                }
-                $query = 'select id_reclamado, tipo, DAY(dia) as dia, MONTH(dia) as mes, YEAR(dia) as ano from reclamacao where id_reclamado ='.$id;
+                $query = "select id_reclamado, tipo, DAY(dia_ocorrido) as dia, MONTH(dia_ocorrido) as mes, YEAR(dia_ocorrido) as ano from reclamacao where id_reclamado =".$user['id_usuario']." AND YEAR(dia_ocorrido) >= ".date('Y');
                 $result = mysqli_query($con, $query);
-
+                $cont = 0;
                 while ($row = mysqli_fetch_array($result)) {
                   $mes = "";
               		switch($row['mes']){
@@ -125,7 +122,8 @@
               			case"9":  $mes = "Setembro"; 	break;
               			case"10": $mes = "Outubro"; 	break;
               			case"11": $mes = "Novembro";   	break;
-              			case"12": $mes = "Dezembro";  	break;
+                    case"12": $mes = "Dezembro";  	break;
+                    $cont++;
                   }
 
 
@@ -140,6 +138,10 @@
                       echo '<span class="font-weight-bold">'.$row['tipo'].'</span>';
                     echo '</div>';
                   echo '</a>';
+                  if($cont >= 3){
+                    echo "<script type='text/javascript'>alert('VOCÊ POSSUI 3 OU MAIS ADVERTÊNCIAS, FAVOR PROCURAR O RH');</script>";
+                  }
+                  
                 }
                  ?>
 
@@ -152,17 +154,7 @@
                 aria-haspopup="true" aria-expanded="false">
 
                   <?php
-                  include("connection.php");
-
-                  if(isset($_GET['id'])){
-                    $id = $_GET ['id'];
-                    $query = "select * from usuario where id_usuario = ".$id;
-                    $result = mysqli_query($con, $query);
-                    while($row = mysqli_fetch_array($result)){
-                      echo '<span class="."mr-2 d-none d-lg-inline text-white small>'.$row['nome'].'&nbsp&nbsp&nbsp</span>';
-                    }
-
-                  }
+                  echo '<span class="."mr-2 d-none d-lg-inline text-white small>'.$user['nome'].'&nbsp&nbsp&nbsp</span>';
                   ?>
 
                 <img class="img-profile rounded-circle" src="img/atari.png" width="40px">
@@ -170,19 +162,19 @@
               <!-- Dropdown - User Information -->
               <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
                 <?php
-                if(isset($_GET['id'])){
-                  $id = $_GET ['id'];
-                  $query = "select id_usuario, UPPER(nucleo) as nucleo from usuario where id_usuario = ".$id;
-                  $result = mysqli_query($con, $query);
-                  while($row = mysqli_fetch_array($result)){
-                    if($row['nucleo'] == 'DRH'){
-                      echo '<a class="dropdown-item" href="RH.php?id='.$row['id_usuario'].'">';
+                    if($user['nucleo'] == 'DRH'){
+                      echo '<a class="dropdown-item" href="RH.php">';
                       echo '<i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>';
                       echo 'RH';
                       echo '</a>';
-                    }
                   }
+                  else if($user['nucleo'] == 'DVP'){
+                    echo '<a class="dropdown-item" href="DVP.php">';
+                    echo '<i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>';
+                    echo 'DVP';
+                    echo '</a>';
                   }
+
                  ?>
 
                 <a class="dropdown-item" href="mudar.php">
@@ -210,6 +202,32 @@
 
           <!-- Earnings (Monthly) Card Example -->
           <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card border-left-warning shadow h-100 py-2">
+              <div class="card-body">
+                <div class="row no-gutters align-items-center">
+                  <div class="col mr-2">
+                    <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">Meta de Faturamento</div>
+                    <div id="TOTAL_FATURAMENTO" class="h5 mb-0 font-weight-bold text-gray-800">
+                      <?php
+                      include('connection.php');
+                      $query = "SELECT faturamento FROM stats WHERE id_stats = 1";
+                      $result = mysqli_query($con, $query);
+                      $fat = mysqli_fetch_array($result, MYSQLI_NUM);
+                      echo "".$fat[0]."K";
+                     ?>
+                   </div>
+                  </div>
+                  <div class="col-auto">
+                    <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+
+          <!-- Earnings (Monthly) Card Example -->
+          <div class="col-xl-3 col-md-6 mb-4">
             <div class="card border-left-info shadow h-100 py-2">
               <div class="card-body">
                 <div class="row no-gutters align-items-center">
@@ -230,7 +248,7 @@
                       <?php
                         //include('graph_functions.php');
                         $r = billing_amount();
-                        $percent_qf = ($r*100)/80;
+                        $percent_qf = ($r*100)/$fat[0];
                         $style_data = "width:" . $percent_qf . "%;";
                         echo ' <div class="col">';
                         echo      '<div class="progress progress-sm mr-2">';
@@ -262,17 +280,25 @@
             </div>
           </div>
 
-          <!-- Earnings (Monthly) Card Example -->
+          <!-- Pending Requests Card Example -->
           <div class="col-xl-3 col-md-6 mb-4">
             <div class="card border-left-warning shadow h-100 py-2">
               <div class="card-body">
                 <div class="row no-gutters align-items-center">
                   <div class="col mr-2">
-                    <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">Meta de Faturamento</div>
-                    <div id="TOTAL_FATURAMENTO" class="h5 mb-0 font-weight-bold text-gray-800">80K</div>
+                    <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">Meta de Projetos</div>
+                    <div id="TOTAL_PROJETOS" class="h5 mb-0 font-weight-bold text-gray-800">
+                      <?php
+                      include('connection.php');
+                      $query = "SELECT projetos FROM stats WHERE id_stats = 1";
+                      $result = mysqli_query($con, $query);
+                      $proj = mysqli_fetch_array($result, MYSQLI_NUM);
+                      echo "".$proj[0];
+                     ?>
+                    </div>
                   </div>
                   <div class="col-auto">
-                    <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
+                    <i class="fas fa-clipboard-list fa-2x text-gray-300"></i>
                   </div>
                 </div>
               </div>
@@ -299,7 +325,7 @@
                       <?php
                         //include('graph_functions.php');
                         $qt_projects = actual_projects();
-                        $percent_qt = ($qt_projects * 100) / 50;
+                        $percent_qt = ($qt_projects * 100) / $proj[0];
                         $style_data = "width: " . $percent_qt . "%;";
 
                         echo ' <div class="col">';
@@ -332,22 +358,7 @@
             </div>
           </div>
 
-          <!-- Pending Requests Card Example -->
-          <div class="col-xl-3 col-md-6 mb-4">
-            <div class="card border-left-warning shadow h-100 py-2">
-              <div class="card-body">
-                <div class="row no-gutters align-items-center">
-                  <div class="col mr-2">
-                    <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">Meta de Projetos</div>
-                    <div id="TOTAL_PROJETOS" class="h5 mb-0 font-weight-bold text-gray-800">50</div>
-                  </div>
-                  <div class="col-auto">
-                    <i class="fas fa-clipboard-list fa-2x text-gray-300"></i>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
+
         </div>
 
         <!-- Content Row -->
@@ -415,20 +426,16 @@
                 <h6 class="m-0 font-weight-bold text-primary">Quem esta na sede:</h6>
               </div>
               <?php
-              include("connection.php");
-              if(isset($_GET['id'])){
-                $id = $_GET ['id'];
-              }
-                if ($id != null){
-                  $result = mysqli_query($con, 'select id_usuario from usuario  where id_usuario = '.$id);
+
+                if ($user['id_usuario'] != null){
                   $query1 = 'select nome, id_usuario, count(*) as quantidade from escalonamento join usuario using(id_usuario) group by id_usuario having count(*) % 2 = 1';
                   $result1 = mysqli_query($con, $query1);
-    
+
                   while ($row = mysqli_fetch_array($result1)) {
                     echo '<div class="card-body">';
                       echo '<img src="img/Avatar1.png" width="45px">';
                       echo '<span class="nome">'.$row['nome'].'</span>';
-                      echo '<a href="denuncia.php?id_denunciador='.$id.'&id_denunciado='.$row['id_usuario'].'" class="d-none d-sm-inline-block btn btn-danger ">';
+                      echo '<a href="denuncia.php?id_denunciador='.$user['id_usuario'].'&id_denunciado='.$row['id_usuario'].'" class="d-none d-sm-inline-block btn btn-danger ">';
                       echo '<span class="icon text-white"> <i class="fas fa-exclamation-triangle"></i> Não está na sede! </span>';
                       echo '</a>';
                     echo '</div>';
@@ -494,19 +501,19 @@
     </div>
     <!-- End of Main Content -->
 
-    
+
     <!-- Footer -->
     <footer class="sticky-footer bg-white">
       <div class="container my-auto">
         <div class="copyright text-center my-auto">
         <form action="iamhere.php" type="POST" enctype="multipart/form-data">
           <span>Desafio Trainee NPCP 2019</span>
-            <input type="hidden" value="<?php  if(isset($_GET['id'])){$id = $_GET ['id']; echo $id;} ?>" name="id">
+            <input type="hidden" value="<?php  $user['id_usuario'] ?>" name="id">
             <input id="bt_iamhere" type="submit" style="margin-left: 30px" class="btn btn-primary" data-dismiss="modal" value="Estou aqui  / Sair da Sede"/>
           </form>
         </div>
       </div>
-      
+
     </footer>
 
     <!-- End of Footer -->
@@ -536,7 +543,7 @@
         <div class="modal-body">Selecione sair para ficar offline</div>
         <div class="modal-footer">
           <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancelar</button>
-          <a class="btn btn-primary" href="login.html">Sair</a>
+          <a class="btn btn-primary" href="login.php">Sair</a>
         </div>
       </div>
     </div>

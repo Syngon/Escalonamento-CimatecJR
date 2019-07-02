@@ -44,6 +44,119 @@
     .logomarca {
       width: 45px;
     }
+    .pad {
+        padding: 5%;
+    }
+
+    .col-lg-9 {
+        margin-right: auto;
+        margin-left: auto;
+    }
+
+    .container-logo {
+        width: 45px;
+    }
+
+    .nome {
+        position: relative;
+        margin-left: 10px;
+        font-size: 1.5em;
+        top: 5px;
+    }
+
+    .fa-exclamation-triangle {
+        position: relative;
+        margin-left: -1px;
+    }
+
+    .btn-danger {
+        float: right;
+        position: relative;
+        margin-top: 3px;
+    }
+
+    .escrita {
+        position: relative;
+        margin-left: 100px;
+        margin-top: -70px;
+    }
+
+    .logomarca {
+        width: 45px;
+    }
+
+    .body {
+        width: 100%;
+        height: 100%;
+        margin: 0px;
+        padding: 0;
+    }
+
+    .box {
+        display: flex;
+        width: 200px;
+        height: 200px;
+        position: relative;
+        margin-right: auto;
+        margin-left: auto;
+    }
+
+    .avatar::after {
+        opacity: 0;
+        font-family: FontAwesome;
+        content: "\f040";
+        color: #fff;
+        font-size: 2.5rem;
+        position: absolute;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        top: 4px;
+        left: 4px;
+        width: 92px;
+        height: 92px;
+        z-index: 2;
+        background-color: rgba(0, 0, 0, 0.5);
+        border-radius: 50%;
+        cursor: pointer;
+        transition: 350ms ease-in-out;
+    }
+
+    .avatar:hover::after {
+        opacity: 1;
+    }
+
+    .avatar {
+        box-sizing: border-box;
+        border-radius: 50%;
+        overflow: hidden;
+        width: 100%;
+    }
+
+    .menu {
+        position: absolute;
+        opacity: 0;
+        width: 100px;
+        height: auto;
+        background-color: #fff;
+        box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.5);
+        box-sizing: border-box;
+        padding: 0.5rem;
+        border-radius: 0.5rem;
+        top: 60%;
+        left: 60%;
+        z-index: -1;
+        transition: 350ms ease-in-out;
+    }
+
+    .box input {
+        display: none;
+    }
+
+    .box input:checked+div.menu {
+        opacity: 1;
+        z-index: 999;
+    }
   </style>
 
   <!-- Page Wrapper -->
@@ -89,8 +202,8 @@
                     Notificação
                   </h6>
                   <?php
-                $query = "select id_reclamado, tipo, DAY(dia_ocorrido) as dia, MONTH(dia_ocorrido) as mes, YEAR(dia_ocorrido) as ano from reclamacao where id_reclamado =".$user['id_usuario']." AND YEAR(dia_ocorrido) >= ".date('Y');
-                $result = mysqli_query($con, $query);
+                  $query = 'select id_reclamado, tipo, DAY(dia_ocorrido) as dia, MONTH(dia_ocorrido) as mes, YEAR(dia_ocorrido) as ano from reclamacao where id_reclamado ='.$user['id_usuario']." AND YEAR(dia_ocorrido) >= ".date('Y');
+                  $result = mysqli_query($con, $query);
 
                   while ($row = mysqli_fetch_array($result)) {
                     $mes = "";
@@ -159,88 +272,63 @@
 
         <!-- Begin Page Content -->
         <div class="container-fluid">
+            <div class="col-xl-12 col-lg-7">
+                <div class="card shadow mb-4">
+                    <!-- Card Header - Dropdown -->
+                    <div class="card-header py-3   d-flex flex-row align-items-center justify-content-between">
+                        <h6 class="m-0 font-weight-bold text-primary">Área do Administrador</h6>
+                    </div>
 
-          <!-- DataTales Example -->
-          <div class="card shadow mb-4">
-            <div class="card-header py-3">
-              <h6 class="m-0 font-weight-bold text-primary">Escalonamento dos Membros</h6>
-
+                    <div class="col-lg-9">
+                        <div class="pad">
+                            <div class="text-center">
+                                <h1 class="h4 text-gray-900 mb-4">Editor de Metas</h1>
+                            </div>
+                            <form action="change_project_goal.php" method="POST" id="user" class="user">
+                                <div class="form-group row">
+                                    <div class="col-sm-6 mb-3 mb-sm-0">
+                                        <input type="number" class="form-control" placeholder="Nova Meta de Projetos" name="newProjectGoal">
+                                    </div>
+                                    <div class="col-sm-6">
+                                    <button class="btn btn-primary btn-block" type="submit">Salvar</button>
+                                    </div>
+                                </div>
+                            </form>
+                            <form action="change_earning_goal.php" method="POST" id="user" class="user">
+                                <div class="form-group row">
+                                    <div class="col-sm-6 mb-3 mb-sm-0">
+                                        <input type="number" class="form-control" placeholder="Nova Meta de Faturamento" name="newEarnGoal">
+                                    </div>
+                                    <div class="col-sm-6">
+                                    <button class="btn btn-primary btn-block" type="submit">Salvar</button>
+                                    </div>
+                                </div>
+                            </form>
+                            <div class="text-center mt-4">
+                                <h1 class="h4 text-gray-900 mb-4">Novo Projeto</h1>
+                            </div>
+                            <form action="insert_projects.php" method="POST" id="user" class="user">
+                                <div class="form-row">
+                                    <div class="col-md-6 mb-3">
+                                        <label for="validationDefault03">Nome do Projeto</label>
+                                        <input type="text" class="form-control" id="validationDefault03" placeholder="Nome do Projeto" required name="name">
+                                    </div>
+                                    <div class="col-md-3 mb-3">
+                                        <label for="validationDefault04">Valor do Projeto</label>
+                                        <input type="number" class="form-control" id="validationDefault04" placeholder="Valor do Projeto" required name="value">
+                                    </div>
+                                    <div class="col-md-3 mb-3">
+                                        <label for="validationDefault05">Data</label>
+                                        <input type="date" class="form-control" id="validationDefault05" placeholder="Data" required name="date">
+                                    </div>
+                                </div>
+                                <button class="btn btn-primary btn-block" type="submit">Salvar</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="card-body">
-              <div class="table-responsive">
-                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-                  <thead>
-                    <tr>
-                      <th>Nome</th>
-                      <th>Cargo</th>
-                      <th>Núcleo</th>
-                      <th>Horas Semanais</th>
-                      <th>Denúncias</th>
-                      <th>Advertências</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr>
-                      <?php
-                      $query = "SELECT u.id_usuario, u.nome, u.cargo, u.nucleo, u.cpf, COUNT(d.denunciado) AS denuncias FROM usuario u JOIN denuncia d ON(u.id_usuario = d.denunciado) GROUP BY u.id_usuario union all SELECT u.id_usuario, u.nome, u.cargo, u.nucleo, u.cpf, 0 AS denuncias FROM usuario u JOIN denuncia d WHERE u.id_usuario NOT IN (SELECT denunciado FROM denuncia) GROUP BY u.id_usuario";
-                      $result = mysqli_query($con, $query);
-
-                      while($row = mysqli_fetch_assoc($result)){
-                        echo "<tr>";
-                          echo '<form method="post" action="reclamacao.php">';
-                            echo "<td>".$row['nome']."</td>";
-                            echo "<td>".$row['cargo']."</td>";
-                            echo "<td>".$row['nucleo']."</td>";
-                            echo "<td>".$row['cpf']."</td>";
-                            echo "<td>".$row['denuncias']."</td>";
-                            echo "<td>";
-                              echo '<select name="opcao">';
-                                echo '<option value=""></option>';
-                                echo '<option value="Falta">Falta</option>';
-                                echo '<option value="Horario">Poucas horas</option>';
-                                echo '';
-                              echo '</select>';
-                              echo '&nbsp&nbsp&nbsp<input type="date" placeholder="Data" required="" name="date" value="'.date('Y-m-d').'">';
-                              echo '&nbsp&nbsp&nbsp<input type="submit" value="Enviar"/>';
-                              echo '<input type="hidden" name="id" value="'.$row['id_usuario'].'">';
-                            echo "</form>";
-                          echo "</td>";
-                        echo "</tr>";
-                      }
-                       ?>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-            </div>
-          </div>
-
         </div>
-        <!-- /.container-fluid -->
-
-      </div>
-      <!-- End of Main Content -->
-
-      <!-- Footer -->
-      <footer class="sticky-footer bg-white">
-        <div class="container my-auto">
-          <div class="copyright text-center my-auto">
-            <span>Desafio Trainee 2019</span>
-          </div>
-        </div>
-      </footer>
-      <!-- End of Footer -->
-
-    </div>
-    <!-- End of Content Wrapper -->
-
-  </div>
-  <!-- End of Page Wrapper -->
-
-  <!-- Scroll to Top Button-->
-  <a class="scroll-to-top rounded" href="#page-top">
-    <i class="fas fa-angle-up"></i>
-  </a>
 
   <!-- Logout Modal-->
   <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
