@@ -86,7 +86,7 @@
                                         <a class="small" href="forgot-password.html">Esqueci minha senha</a>
                                     </div>
                                     <div class="text-center">
-                                        <a class="small" href="register.html">Nao possui uma conta? Crie uma!</a>
+                                        <a class="small" href="register.php">Nao possui uma conta? Crie uma!</a>
                                     </div>
                                 </div>
                             </div>

@@ -506,11 +506,25 @@ $user = $_SESSION['user'];
     <footer class="sticky-footer bg-white">
       <div class="container my-auto">
         <div class="copyright text-center my-auto">
-        <form action="iamhere.php" type="POST" enctype="multipart/form-data">
-          <span>Desafio Trainee NPCP 2019</span>
+          <form action="iamhere.php" type="POST" enctype="multipart/form-data">
+            <span>Desafio Trainee NPCP 2019</span>
             <input type="hidden" value="<?php  $user['id_usuario'] ?>" name="id">
             <input id="bt_iamhere" type="submit" style="margin-left: 30px" class="btn btn-primary" data-dismiss="modal" value="Estou aqui  / Sair da Sede"/>
           </form>
+          <?php
+            if ($user['id_usuario'] != null) {
+              
+              $query2 = 'select nome, id_usuario, count(*) as quantidade from escalonamento join usuario using(id_usuario) group by id_usuario having count(*) % 2 = 1';
+              $result2 = mysqli_query($con, $query1);
+              
+              if (mysqli_fetch_array($result2) != null) {
+                echo '<form action="iforgot.php" type="POST" enctype="multipart/form-data">';
+                  echo '<input id="caralho" type="hidden" value="<?php '.$user['id_usuario'].' ?>"name="id">';
+                  echo '<input id="bt_iforgot" type="submit" style="margin-left: 30px; margin-top: 30px" class="btn btn-secondary" data-dismiss="modal" value="Esqueci de sair da Sede!"/>';
+                echo '</form>';
+              }
+            }
+          ?>
         </div>
       </div>
 
