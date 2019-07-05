@@ -27,20 +27,17 @@ function number_format(number, decimals, dec_point, thousands_sep) {
     return s.join(dec);
 }
 
-//var array_bill, string_bill;
-//string_bill = "<?php include('graph_functions.php'); $string_bil = billing_by_month(); echo $string_bill; ?>";
-//array_bill = string_bill.split("|");
-
 jQuery.ajax({
     type: "POST",
     url: 'monthbill.php',
 
     success: function (el) {
-                 fcc(el);
+                mac(el);
+                next();
             }
 });
 
-function fcc(data) {
+function mac(data) {
     var ctx = document.getElementById("myAreaChart");
     var array = data.split("|");
 
@@ -134,4 +131,51 @@ function fcc(data) {
 }
 // Area Chart Example
 
+function next(){
+    jQuery.ajax({
+        type: "POST",
+        url: 'pendent.php',
+      
+        success: function(el) {
+          mpc(el);
+        }
+      });
+}
+
+function mpc(data) {
+
+    // Pie Chart Example
+    var ctx = document.getElementById("myPieChart");
+    var array = data.split("|");
+    
+    var myPieChart = new Chart(ctx, {
+      type: 'doughnut',
+      data: {
+        labels: ["Pendente", "Concluido"],
+        datasets: [{
+          data: array,
+          backgroundColor: ['#4169e1', '#e74a3b'],
+          hoverBackgroundColor: ['#120a8f', '#be2617'],
+          hoverBorderColor: "rgba(0, 0, 0, 0.3)",
+        }],
+      },
+      options: {
+        maintainAspectRatio: false,
+        tooltips: {
+          backgroundColor: "rgb(255,255,255)",
+          bodyFontColor: "#858796",
+          borderColor: '#dddfeb',
+          borderWidth: 1,
+          xPadding: 15,
+          yPadding: 15,
+          displayColors: false,
+          caretPadding: 10,
+        },
+        legend: {
+          display: false
+        },
+        cutoutPercentage: 80,
+      },
+    });
+  }
 

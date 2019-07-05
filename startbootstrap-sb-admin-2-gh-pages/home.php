@@ -400,10 +400,10 @@ $user = $_SESSION['user'];
                 </div>
                 <div class="mt-4 text-center small">
                   <span class="mr-2">
-                    <i class="fas fa-circle text-danger"></i> Pendente
+                    <i class="fas fa-circle text-danger"></i> Concluído
                   </span>
                   <span class="mr-2">
-                    <i class="fas fa-circle text-success"></i> Concluido
+                    <i class="fas fa-circle text-success"></i> Pendente
                   </span>
                 </div>
               </div>
