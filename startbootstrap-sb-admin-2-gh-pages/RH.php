@@ -177,6 +177,7 @@
                       <th>Horas Semanais</th>
                       <th>Denúncias</th>
                       <th>Advertências</th>
+                      <th>Perfil</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -201,9 +202,13 @@
                                 echo '';
                               echo '</select>';
                               echo '&nbsp&nbsp&nbsp<input type="date" placeholder="Data" required="" name="date" value="'.date('Y-m-d').'">';
-                              echo '&nbsp&nbsp&nbsp<input type="submit" value="Enviar"/>';
+                              echo '&nbsp&nbsp&nbsp<input class="btn btn-primary" type="submit" value="Enviar"/>';
                               echo '<input type="hidden" name="id" value="'.$row['id_usuario'].'">';
                             echo "</form>";
+                          echo '<td><form method="get" action="perfil.php">';
+                            echo '<input type="hidden" name="id" value="'.$row['id_usuario'].'">';
+                            echo '&nbsp&nbsp&nbsp<input class="btn btn-secondary" type="submit" value="Perfil"/>';
+                            echo '</form></td>';
                           echo "</td>";
                         echo "</tr>";
                       }

@@ -18,6 +18,8 @@
         include('connection.php');
         session_start();
 
+        date_default_timezone_set('America/Sao_Paulo');
+
         $time_now = date('H:i:s');
 
         if(!isset($_SESSION['user'])){
