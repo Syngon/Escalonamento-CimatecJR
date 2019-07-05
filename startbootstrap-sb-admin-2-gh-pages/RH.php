@@ -11,6 +11,31 @@
     //header('location:login.php');
   }
   $user = $_SESSION['user'];
+
+  function hour_spent($id){
+    include('connection.php');
+    $schedule_array = array();
+    $time_spent = 0;
+    $query = "select time(t.horario) as horario from escalonamento t where horario between date_sub(now(), interval 7 day) and now() and t.id_usuario = ";
+    $query .=  $id;
+    $query .= " order by horario;";
+
+    $result = mysqli_query($con, $query);
+    while($row = mysqli_fetch_assoc($result)){
+        array_push($schedule_array, $row['horario']);
+    }
+
+    $odd = (count($schedule_array) % 2 == 0 ? 0 : 1);
+
+    for ($i=0; $i < count($schedule_array) - $odd; $i+=2) { 
+        $time_spent += (strtotime($schedule_array[$i+1]) - strtotime($schedule_array[$i]));
+    }
+
+    $time_spent /= 60;
+    $time_spent /= 60;
+    $time_spent = number_format((float)$time_spent, 2, '.', '');
+    return $time_spent;
+  }
    ?>
 
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -185,14 +210,14 @@
                       <?php
                       $query = "SELECT u.id_usuario, u.nome, u.cargo, u.nucleo, u.cpf, COUNT(d.denunciado) AS denuncias FROM usuario u JOIN denuncia d ON(u.id_usuario = d.denunciado) GROUP BY u.id_usuario union all SELECT u.id_usuario, u.nome, u.cargo, u.nucleo, u.cpf, 0 AS denuncias FROM usuario u JOIN denuncia d WHERE u.id_usuario NOT IN (SELECT denunciado FROM denuncia) GROUP BY u.id_usuario";
                       $result = mysqli_query($con, $query);
-
+      
                       while($row = mysqli_fetch_assoc($result)){
                         echo "<tr>";
                           echo '<form method="post" action="reclamacao.php">';
                             echo "<td>".$row['nome']."</td>";
                             echo "<td>".$row['cargo']."</td>";
                             echo "<td>".$row['nucleo']."</td>";
-                            echo "<td>".$row['cpf']."</td>";
+                            echo "<td>".hour_spent($row['id_usuario'])."h</td>";
                             echo "<td>".$row['denuncias']."</td>";
                             echo "<td>";
                               echo '<select name="opcao">';

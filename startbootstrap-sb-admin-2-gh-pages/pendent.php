@@ -41,7 +41,4 @@
 
     $time_spent_str = implode("|", $time_spent_array);
     echo $time_spent_str;
-
-   
-    
 ?>
