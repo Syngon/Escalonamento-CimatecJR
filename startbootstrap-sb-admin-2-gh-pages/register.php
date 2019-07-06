@@ -19,6 +19,8 @@
 
   <!-- Custom styles for this template-->
   <link href="css/sb-admin-2.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
 
 </head>
 
@@ -113,7 +115,7 @@
                 </div>
                 <div class="form-group row">
                   <div class="col-sm-6 mb-3 mb-sm-0">
-                    <input type="tel" class="form-control form-control-user" placeholder="Numero" name="numero">
+                    <input type="tel" class="form-control form-control-user" placeholder="Número" name="numero">
                   </div>
                   <div class="col-sm-6">
                     <input type="text" class="form-control form-control-user" placeholder="Complemento" name="complemento">
@@ -134,9 +136,35 @@
                     <input type="text" class="form-control form-control-user" id="exampleFirstName" placeholder="PIN" name="pin">
                   </div>
                   <div class="col-last col-sm-6 mb-3 mb-sm-0">
-                    <input type="date" class="form-control form-control-user" placeholder="Data de Nascimento" name="nascimento">
+                    <input type="date" class="form-control form-control-user" placeholder="Data de Nascimento" name="nascimento" onfocus="(this.type='date')" onblur="(this.type='text')">
+                  </div>
+                  <br><br><br>
+                  <div class="col-sm-6 mb-3 mb-sm-0">
+                    <input type="date" class="form-control form-control-user" placeholder="Data de Efetivação" name="efetivacao" onfocus="(this.type='date')" onblur="(this.type='text')">
                   </div>
                 </div>
+                <br>
+                  <div>
+                    <select name="cargo" style="border-radius: 10px; width: 250px; height: 50px; font-family:Font Awesome 5 Free;font-style: normal;font-weight: 200;font-display: auto;">
+                      <option value="" disabled selected>Cargo</option>
+                      <option value="Membro">Membro</option>
+                      <option value="Gerente de projetos">Gerente de projetos</option>
+                      <option value="Gerente de núcleo">Gerente de núcleo</option>
+                      <option value="Diretor">Diretor</option>
+                    </select>
+                  
+                    <select name="nucleo" style="float: right;border-radius: 10px; width: 250px; height: 50px; font-family:Font Awesome 5 Free;font-style: normal;font-weight: 200;font-display: auto;">
+                      <option value="" disabled selected>Nucleo</option>
+                      <option value="NPC">NPC</option>
+                      <option value="NPCA">NPCA</option>
+                      <option value="NPCP">NPCP</option>
+                      <option value="NPE">NPE</option>
+                      <option value="NPQ">NPQ</option>
+                      <option value="NPM">NPM</option>
+                      <option value="NPP"NPP></option>
+                    </select>
+                    <br>
+                  </div>
                   <nav class="navbar navbar-expand navbar-light bg-light mb-4"></nav>
                 <input type="submit" class="btn btn-primary btn-user btn-block" value="Cadastrar-se"/>
 
@@ -162,7 +190,7 @@
               <hr>
 
               <div class="text-center">
-                <a class="small" href="login.html">Ja possui uma conta? Faca o login!</a>
+                <a class="small" href="login.html">Já possui uma conta? Faça o login!</a>
               </div>
             </div>
           </div>

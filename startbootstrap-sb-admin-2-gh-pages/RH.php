@@ -202,6 +202,7 @@
                       <th>Horas Semanais</th>
                       <th>Denúncias</th>
                       <th>Advertências</th>
+                      <th>Desligar</th>
                       <th>Perfil</th>
                     </tr>
                   </thead>
@@ -226,10 +227,13 @@
                                 echo '<option value="Horario">Poucas horas</option>';
                                 echo '';
                               echo '</select>';
-                              echo '&nbsp&nbsp&nbsp<input type="date" placeholder="Data" required="" name="date" value="'.date('Y-m-d').'">';
+                              echo '&nbsp&nbsp&nbsp Data do ocorrido: <input type="date" placeholder="Data" required="" name="date" value="'.date('Y-m-d').'">';
                               echo '&nbsp&nbsp&nbsp<input class="btn btn-primary" type="submit" value="Enviar"/>';
                               echo '<input type="hidden" name="id" value="'.$row['id_usuario'].'">';
                             echo "</form>";
+                            echo '<td><form method="post" action="desligar.php">';
+                            echo '&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp<input class="btn btn-secondary" style="background-color: red;" type="submit" value="DESLIGAR"/>';
+                            echo '</form></td>';
                           echo '<td><form method="get" action="perfil.php">';
                             echo '<input type="hidden" name="id" value="'.$row['id_usuario'].'">';
                             echo '&nbsp&nbsp&nbsp<input class="btn btn-secondary" type="submit" value="Perfil"/>';

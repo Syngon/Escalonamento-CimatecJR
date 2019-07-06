@@ -13,10 +13,14 @@ $cpf = $_POST['cpf'];
 $rua = $_POST['rua'];
 $cep = $_POST['cep'];
 $numero = $_POST['numero'];
+$nascimento = $_POST['nascimento'];
+$efetivacao = $_POST['efetivacao'];
 $pin = $_POST['pin'];
 $complemento = $_POST['complemento'];
 $cidade = $_POST['cidade'];
 $bairro = $_POST['bairro'];
+$cargo = $_POST['cargo'];
+$nucleo = $_POST['nucleo'];
 
 if($pin != 123)
 {
@@ -47,7 +51,7 @@ else
     //Pegar id_endereco para colocar no Usuario
     $endereco = mysqli_insert_id($con);
 
-    $query = "INSERT INTO usuario(nome, sobrenome, email, senha, telefone, cpf, endereco, cargo, nucleo) VALUES('$nome', '$sobrenome', '$email', '$senha', '$telefone', '$cpf', '$endereco', '.', '.')";
+    $query = "INSERT INTO usuario(nome, sobrenome, email, senha, telefone, cpf, endereco, cargo, nucleo, data_nascimento, data_efetivacao) VALUES('$nome', '$sobrenome', '$email', '$senha', '$telefone', '$cpf', '$endereco', '$cargo', '$nucleo', '$nascimento', '$efetivacao')";
     $result = mysqli_query($con, $query);
 
     if($result)
