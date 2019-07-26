@@ -3,4 +3,4 @@
 
 **Área do membro** do [Site da CimatecJR](http://www.cimatecjr.com.br) que gerencia os horários semanais do escalonamento.
 
-![CimatecJR](https://github.com/Syngon/Escalonamento/escalonamento/img/engbranco.png)
+![CimatecJR](https://github.com/Syngon/Escalonamento/blob/master/escalonamento/img/LogoColorida.png)
