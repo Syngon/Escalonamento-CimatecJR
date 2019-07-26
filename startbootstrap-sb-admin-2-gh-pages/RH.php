@@ -209,10 +209,10 @@
                   <tbody>
                     <tr>
                       <?php
-                      $query = "SELECT u.id_usuario, u.nome, u.cargo, u.nucleo, u.cpf, COUNT(d.denunciado) AS denuncias FROM usuario u JOIN denuncia d ON(u.id_usuario = d.denunciado) GROUP BY u.id_usuario union all SELECT u.id_usuario, u.nome, u.cargo, u.nucleo, u.cpf, 0 AS denuncias FROM usuario u JOIN denuncia d WHERE u.id_usuario NOT IN (SELECT denunciado FROM denuncia) GROUP BY u.id_usuario";
+                      $query = "SELECT u.id_usuario, u.nome, u.cargo, u.nucleo, u.cpf, u.data_desligamento , COUNT(d.denunciado) AS denuncias FROM usuario u JOIN denuncia d ON(u.id_usuario = d.denunciado) GROUP BY u.id_usuario union all SELECT u.id_usuario, u.nome, u.cargo, u.nucleo, u.cpf, u.data_desligamento, 0 AS denuncias FROM usuario u JOIN denuncia d WHERE u.id_usuario NOT IN (SELECT denunciado FROM denuncia) GROUP BY u.id_usuario";
                       $result = mysqli_query($con, $query);
-      
                       while($row = mysqli_fetch_assoc($result)){
+                        if($row['data_desligamento'] == '1111-11-11'){
                         echo "<tr>";
                           echo '<form method="post" action="reclamacao.php">';
                             echo "<td>".$row['nome']."</td>";
@@ -227,19 +227,21 @@
                                 echo '<option value="Horario">Poucas horas</option>';
                                 echo '';
                               echo '</select>';
-                              echo '&nbsp&nbsp&nbsp Data do ocorrido: <input type="date" placeholder="Data" required="" name="date" value="'.date('Y-m-d').'">';
+                              echo '&nbsp Data do ocorrido: <input type="date" placeholder="Data" required="" name="date" value="'.date('Y-m-d').'">';
                               echo '&nbsp&nbsp&nbsp<input class="btn btn-primary" type="submit" value="Enviar"/>';
                               echo '<input type="hidden" name="id" value="'.$row['id_usuario'].'">';
                             echo "</form>";
                             echo '<td><form method="post" action="desligar.php">';
-                            echo '&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp<input class="btn btn-secondary" style="background-color: red;" type="submit" value="DESLIGAR"/>';
+                            echo '&nbsp&nbsp&nbsp&nbsp<input class="btn btn-secondary" style="background-color: red;" type="submit" value="DESLIGAR"/>';
+                            echo '<input type="hidden" name="id_usuario" value="'.$row['id_usuario'].'">';
                             echo '</form></td>';
-                          echo '<td><form method="get" action="perfil.php">';
+                          echo '<td><form method="post" action="perfil.php">';
                             echo '<input type="hidden" name="id" value="'.$row['id_usuario'].'">';
                             echo '&nbsp&nbsp&nbsp<input class="btn btn-secondary" type="submit" value="Perfil"/>';
                             echo '</form></td>';
                           echo "</td>";
                         echo "</tr>";
+                        }
                       }
                        ?>
                     </tr>

@@ -161,7 +161,7 @@
                       <option value="NPE">NPE</option>
                       <option value="NPQ">NPQ</option>
                       <option value="NPM">NPM</option>
-                      <option value="NPP"NPP></option>
+                      <option value="NPP">NPP</option>
                     </select>
                     <br>
                   </div>

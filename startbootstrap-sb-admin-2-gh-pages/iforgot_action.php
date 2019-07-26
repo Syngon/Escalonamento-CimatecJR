@@ -7,49 +7,39 @@
 
 <?php
 
-    $host = 'fieb.org'; //fieb.org
+    include('connection.php');
+    session_start();
 
-    function get_ip(){
-        //echo $_SERVER['REMOTE_ADDR'];
-        return $_SERVER['HTTP_HOST'];
+    date_default_timezone_set('America/Sao_Paulo');
+
+    $time_now = date('H:i:s');
+
+    if(!isset($_SESSION['user'])){
+        var_dump($_SESSION);
+        header('location:login.php');
     }
+    $user = $_SESSION['user'];
 
-    if (get_ip() != $host) {
-        include('connection.php');
-        session_start();
-
-        date_default_timezone_set('America/Sao_Paulo');
-
-        $time_now = date('H:i:s');
-
-        if(!isset($_SESSION['user'])){
-            var_dump($_SESSION);
-            header('location:login.php');
-        }
-        $user = $_SESSION['user'];
-
-        $date = $_GET['date_insert'];
-        $time = $_GET['time_insert'];
+    $date = $_GET['date_insert'];
+    $time = $_GET['time_insert'];
+    
+    if ($time < $time_now){
+        $query = "INSERT INTO escalonamento(id_usuario, horario) values (";
+        $query .= $user['id_usuario'];
+        $query .= ", '";
         
-        if ($time < $time_now){
-            $query = "INSERT INTO escalonamento(id_usuario, horario) values (";
-            $query .= $user['id_usuario'];
-            $query .= ", '";
-            
-            $query .= $date;
-            $query .= " ";
-            $query .= $time;
-            $query .= ":00');";
-            echo $query;
-            if (mysqli_query($con, $query)) {
-                header("location:home.php");
-            }
-        }
-        else {
-            echo '<p>Data inválida<p>';
+        $query .= $date;
+        $query .= " ";
+        $query .= $time;
+        $query .= ":00');";
+        echo $query;
+        if (mysqli_query($con, $query)) {
+            header("location:home.php");
         }
     }
     else {
-        echo '<p>Você não está no senai<p>';
+        echo '<script>alert("Data inválida")</script>';
+        //header('location:iforgot.php'); 
     }
+   
 ?>

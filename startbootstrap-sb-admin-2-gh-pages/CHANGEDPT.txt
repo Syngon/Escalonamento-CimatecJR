@@ -1,0 +1,19 @@
+
+                    <div class="col-sm-6">
+                        <p>Departamento: <?php 
+                        echo '<form method="POST" action="changeDPT.php">';
+                          echo '<select name="departamento" style="">';
+                            echo '<option value="" disabled selected>departamento</option>';
+                            echo '<option value="DPRESS">DPRESS</option>';
+                            echo '<option value="DVP">DVP</option>';
+                            echo '<option value="DRH">DRH</option>';
+                            echo '<option value="DMKT">DMKT</option>';
+                            echo '<option value="DAF">DAF</option>';
+                            echo '<option value="DPJ">DPJ</option>';
+                          echo '</select>';
+                          echo '<input type="hidden" name="id" id="id" value="'.$id_.'">';
+                          echo '&nbsp&nbsp&nbsp<input class="btn btn-secondary" type="submit" value="Alterar"/>';
+
+                        echo '</form>';
+                        ?></p>
+                    </div>

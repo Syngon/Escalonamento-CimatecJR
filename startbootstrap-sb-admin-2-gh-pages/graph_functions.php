@@ -19,13 +19,13 @@ function actual_projects()
 {
   include("connection.php");
   $total = 0;
-  $query = "SELECT COUNT(*) FROM `faturamento` WHERE YEAR(dia) = 2019";
+  $query = "SELECT COUNT(*) as cont FROM `faturamento` WHERE YEAR(dia) = 2019";
   $result = mysqli_query($con, $query);
 
   while($row = mysqli_fetch_assoc($result)){
-    $total++;
+    $total = $row['cont'];
   }
-  return "$total";
+  return "".$total;
 }
 
 ?>
