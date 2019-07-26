@@ -1,23 +1,6 @@
-# Node.js & Passport Login
+#Escalonamento CimatecJR
+##Projeto feito em PHP para marcar entrada e saída dos funcionários da sede.
 
-This is a user login and registration app using Node.js, Express, Passport, Mongoose, EJS and some other packages.
+**Área do membro** do [Site da CimatecJR](http://www.cimatecjr.com.br) que gerencia os horários semanais do escalonamento.
 
-### Version: 2.0.0
-
-### Usage
-
-```sh
-$ npm install
-```
-
-```sh
-$ npm start
-# Or run with Nodemon
-$ npm run dev
-
-# Visit http://localhost:5000
-```
-
-### MongoDB
-
-Open "config/keys.js" and add your MongoDB URI, local or Atlas
+![CimatecJR](https://github.com/Syngon/Escalonamento/escalonamento/img/engbranco.png)
