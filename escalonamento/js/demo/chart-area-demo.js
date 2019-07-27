@@ -154,8 +154,8 @@ function mpc(data) {
         labels: ["Pendente", "Concluido"],
         datasets: [{
           data: array,
-          backgroundColor: ['#4169e1', '#e74a3b'],
-          hoverBackgroundColor: ['#120a8f', '#be2617'],
+          backgroundColor: ['#e74a3b', '#4169e1'],
+          hoverBackgroundColor: ['#be2617', '#120a8f'],
           hoverBorderColor: "rgba(0, 0, 0, 0.3)",
         }],
       },
