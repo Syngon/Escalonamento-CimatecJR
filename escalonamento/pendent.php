@@ -14,7 +14,7 @@
 
     $user = $_SESSION['user'];
 
-    $query = "select time(t.horario) as horario from escalonamento t where horario between date_sub(now(), interval 7 day) and now() and t.id_usuario = ";
+    $query = "select time(t.horario) as horario from escalonamento t where YEARWEEK(t.horario, 1) = YEARWEEK(CURDATE(), 1) and t.id_usuario = ";
     $query .=  $user['id_usuario'];
     $query .= " order by horario;";
 
