@@ -434,12 +434,16 @@ $user = $_SESSION['user'];
                   $result1 = mysqli_query($con, $query1);
 
                   while ($row = mysqli_fetch_array($result1)) {
+            
                     echo '<div class="card-body">';
                       echo '<img src="img/Avatar1.png" width="45px">';
                       echo '<span class="nome">'.$row['nome'].'</span>';
                       echo '<a href="denuncia.php?id_denunciador='.$user['id_usuario'].'&id_denunciado='.$row['id_usuario'].'" class="d-none d-sm-inline-block btn btn-danger ">';
                       echo '<span class="icon text-white"> <i class="fas fa-exclamation-triangle"></i> Não está na sede! </span>';
                       echo '</a>';
+                      echo '<a href="denuncia.php?id_denunciador='.$user['id_usuario'].'&id_denunciado='.$row['id_usuario'].'" class="btn-mobile d-sm-none d-inline-block btn btn-danger btn-circle">'
+                      echo '<i class="fas fa-exclamation-triangle"></i>'
+                      echo '</a>'
                     echo '</div>';
                   }
                 }
